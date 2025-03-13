@@ -15,16 +15,20 @@ Clone or download the repository to ensure all files are available locally.
 
 ### Polyglot Notebook (optional)
 If you want to edit the notebook or run it interactively in **VS Code** with the **Polyglot Notebook** extension:
+
 https://code.visualstudio.com/docs/languages/polyglot
 
 ### Dotnet Repl
 Install the dotnet tool **dotnet-repl** to launch the notebook (it works independently of Polyglot Notebook):
+
 https://github.com/jonsequitur/dotnet-repl
+
 Note: the notebook uses this code to run the notebook.
 > dotnet repl --run "E:\repo\SaveCheck\main.dib" --exit-after-run
 
 ### SyncBackFree
 Download and install SyncBackFree:
+
 https://www.2brightsparks.com/download-syncbackfree.html
 
 ### Task
