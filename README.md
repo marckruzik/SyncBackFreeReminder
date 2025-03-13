@@ -23,7 +23,7 @@ Install the dotnet tool **dotnet-repl** to launch the notebook (it works indepen
 
 https://github.com/jonsequitur/dotnet-repl
 
-Note: the notebook uses this code to run the notebook.
+Note: the task uses a modified version of this code to run the notebook.
 > dotnet repl --run "E:\repo\SaveCheck\main.dib" --exit-after-run
 
 ### SyncBackFree
