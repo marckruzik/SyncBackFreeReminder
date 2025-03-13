@@ -1,0 +1,122 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
+
+#!csharp
+
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+
+#!csharp
+
+if (Directory.Exists("log") == false) Directory.CreateDirectory("log");
+
+static string log_filepath = $@"log\{DateTime.Now.ToString("yyyy_mm_dd-HH'h'MM'm'ss's'")}-log.txt";
+
+public static void log_no_return(string str)
+{
+    Console.Write(str);
+    File.AppendAllText(log_filepath, str);
+}
+
+public static void log_line(string str) => log_no_return(str + "\r\n");
+
+
+public static void log(string str) => log_line(str);
+
+#!csharp
+
+string profilesPath =
+    Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+        "2BrightSparks",
+        "SyncBackFree");
+
+if (!Directory.Exists(profilesPath))
+{
+    log("Le dossier SyncBackFree n'existe pas.");
+    return;
+}
+
+string[] files = Directory.GetFiles(profilesPath, "*_RHistory.ini");
+log($"files history found: {files.Length}");
+files.ToList().ForEach(log);
+
+#!csharp
+
+static DateTime? ExtractLastRunDate(string filePath)
+{
+    Regex regex = new Regex(@"LastRunDT=(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})(?<hour>\d{2})(?<min>\d{2})(?<sec>\d{2})");
+
+    foreach (string line in File.ReadLines(filePath))
+    {
+        Match match = regex.Match(line);
+        if (match.Success)
+        {
+            return new DateTime(
+                int.Parse(match.Groups["year"].Value),
+                int.Parse(match.Groups["month"].Value),
+                int.Parse(match.Groups["day"].Value),
+                int.Parse(match.Groups["hour"].Value),
+                int.Parse(match.Groups["min"].Value),
+                int.Parse(match.Groups["sec"].Value)
+            );
+        }
+    }
+
+    return null;
+}
+
+#!csharp
+
+List<DateTime> list_datetime = new();
+
+int filename_max_length = files.Max(file => Path.GetFileName(file).Length);
+
+foreach (string file in files)
+{
+    log_no_return($"{Path.GetFileName(file)}".PadRight(filename_max_length + 3));
+    DateTime? lastRun = ExtractLastRunDate(file);
+    if (lastRun.HasValue)
+    {
+        log($" {lastRun.Value:yyyy_MM_dd-HH'h'mm'm'ss's'}");
+        list_datetime.Add(lastRun.Value);
+    }
+    else
+    {
+        log($" no date found");
+    }
+}
+
+#!csharp
+
+static bool StartProcess(string exePath)
+{
+    if (!File.Exists(exePath))
+    {
+        log($"Cannot find exe -> {exePath}");
+        return false;
+    }
+
+    Process process = new Process
+    {
+        StartInfo = new ProcessStartInfo
+        {
+            FileName = exePath,
+            UseShellExecute = true
+        }
+    };
+
+    process.Start();
+    return true;
+}
+
+#!csharp
+
+int day_max = 3;
+if(list_datetime.Any(datetime => DateTime.Now - datetime > TimeSpan.FromMinutes(day_max)))
+{
+    log($"no save since more than {day_max} days");
+    StartProcess(@"F:\Program Files (x86)\2BrightSparks\SyncBackFree\SyncBackFree.exe");
+}
