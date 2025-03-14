@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 if (Directory.Exists("log") == false) Directory.CreateDirectory("log");
 
-static string log_filepath = $@"log\{DateTime.Now.ToString("yyyy_mm_dd-HH'h'MM'm'ss's'")}-log.txt";
+static string log_filepath = $@"log\{DateTime.Now.ToString("yyyy_MM_dd-HH'h'mm'm'ss's'")}-log.txt";
 
 public static void log_no_return(string str)
 {
@@ -115,8 +115,17 @@ static bool StartProcess(string exePath)
 #!csharp
 
 int day_max = 7;
-if(list_datetime.Any(datetime => DateTime.Now - datetime > TimeSpan.FromDays(day_max)))
+TimeSpan timespan_day_max = TimeSpan.FromDays(day_max);
+TimeSpan timespan_delay_max = list_datetime.Max(datetime => DateTime.Now - datetime);
+log($"oldest save: {timespan_delay_max.TotalDays:0.00} days");
+
+if(timespan_delay_max > timespan_day_max)
 {
     log($"no save since more than {day_max} days");
+    log("launch SyncBackFree");
     StartProcess(@"F:\Program Files (x86)\2BrightSparks\SyncBackFree\SyncBackFree.exe");
+}
+else
+{
+    log("no action");
 }
