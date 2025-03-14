@@ -33,7 +33,7 @@ https://www.2brightsparks.com/download-syncbackfree.html
 
 ### Task
 * Launch Task Scheduler (Windows + R "taskschd.msc")
-* Import Task.xml
+* Import SyncBackFreeReminder.xml
 * Edit the task (Right click on the task > Properties > Action > Edit)
 * Update the Start in path to match the folder where the repository has been cloned (the folder containing main.dib)
 * Click Ok
