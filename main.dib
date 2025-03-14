@@ -114,8 +114,8 @@ static bool StartProcess(string exePath)
 
 #!csharp
 
-int day_max = 3;
-if(list_datetime.Any(datetime => DateTime.Now - datetime > TimeSpan.FromMinutes(day_max)))
+int day_max = 7;
+if(list_datetime.Any(datetime => DateTime.Now - datetime > TimeSpan.FromDays(day_max)))
 {
     log($"no save since more than {day_max} days");
     StartProcess(@"F:\Program Files (x86)\2BrightSparks\SyncBackFree\SyncBackFree.exe");
