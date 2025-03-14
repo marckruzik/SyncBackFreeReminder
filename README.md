@@ -24,7 +24,7 @@ Install the dotnet tool **dotnet-repl** to launch the notebook (it works indepen
 https://github.com/jonsequitur/dotnet-repl
 
 Note: the task uses a modified version of this code to run the notebook.
-> dotnet repl --run "E:\repo\SaveCheck\main.dib" --exit-after-run
+> dotnet repl --run "E:\repo\SyncBackFreeReminder\main.dib" --exit-after-run
 
 ### SyncBackFree
 Download and install SyncBackFree:
@@ -33,7 +33,7 @@ https://www.2brightsparks.com/download-syncbackfree.html
 
 ### Task
 * Launch Task Scheduler (Windows + R "taskschd.msc")
-* Import SaveCheck.xml
+* Import Task.xml
 * Edit the task (Right click on the task > Properties > Action > Edit)
 * Update the Start in path to match the folder where the repository has been cloned (the folder containing main.dib)
 * Click Ok
