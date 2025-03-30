@@ -38,5 +38,27 @@ https://www.2brightsparks.com/download-syncbackfree.html
 * Update the Start in path to match the folder where the repository has been cloned (the folder containing main.dib)
 * Click Ok
 
+You will then need to edit the task to specify the folder where the script is: Right click on Task > Properties > tab Action > Start in > edit the path.
+
+If you prefer to create the task yourself (instead of importing it), here are the main details:
+* Launch Task Scheduler (Windows + R "taskschd.msc")
+* Create a new Task
+* Right click on Task > Properties
+* tab General:
+  * check Run with highest privileges
+* tab Trigger:
+  * Click New
+  * Begin the task: At log on
+  * Click Ok
+* tab Action:
+  * Click New
+  * Program/script: cmd
+  * Add arguments: /c start "" /min dotnet repl --run main.dib --exit-after-run
+  * Start in: F:\Program\SyncBackFreeReminder
+  * Click Ok
+
+> [!NOTE]
+> This code uses /min, so the cmd starts minimized. You should still see it briefly at a minimized task at the bottom of the screen.
+
 ## Logs
 The script generates logs inside the log folder (which will appear next to main.dib).
